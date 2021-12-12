@@ -54,6 +54,11 @@ def logoutUser(request):
 	logout(request)
 	return redirect('login')
 
+def whoweare(request):
+	return render(request, 'accounts/whoweare.html')
+
+def info(request):
+	return render(request, 'accounts/info.html')
 
 @login_required(login_url='login')
 def home(request):
