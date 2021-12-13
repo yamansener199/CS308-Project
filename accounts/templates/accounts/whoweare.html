@@ -1,1 +1,107 @@
-<p>Who we are ?</p>
+<!DOCTYPE html>
+<style>
+    body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.column {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background-color: #474e5d;
+  color: white;
+}
+
+.container {
+  padding: 0 16px;
+}
+
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title {
+  color: grey;
+}
+
+@media screen and (max-width: 650px) {
+  .column {
+    width: 100%;
+    display: block;
+  }
+}
+</style>
+{%  include 'accounts/navbar.html' %}
+<body>      
+    <div class="about-section">
+        <h1>Who we are ?</h1>
+        <p>We help people find blood!</p>
+        <p>No charge need ! Voluntary reaction into Action !</p>
+      </div>
+      <h2 style="text-align:center">Our Team</h2>
+      <div class="row">
+        <div class="column">
+          <div class="card">
+            <div class="container">
+              <h2>Uluç Varat</h2>
+              <p class="title">Frontend-Developer</p>
+              <p>Design and Implementation of Navigation bar contact pages etc</p>
+              <p>ulucvarat@firstblood.com</p>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="card">
+            <div class="container">
+              <h2>Efe İlgürgen</h2>
+              <p class="title">Frontend-Developer</p>
+              <p>Design and Implementation of Dashboard </p>
+              <p>efechillgürgen@firstblood.com</p>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="card">
+            <div class="container">
+              <h2>Yaman Şener</h2>
+              <p class="title">Backend-Developer</p>
+              <p>REST-API Development /Database Operations</p>
+              <p>ymns@firstblood.com</p>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+            <div class="card">
+              <div class="container">
+                <h2>Teoman Doğan</h2>
+                <p class="title">Designer</p>
+                <p>Frontend-Developer</p>
+                <p>Design of Login-Register Pages</p>
+                <p>teomandogan@firstblood.com</p>
+              </div>
+            </div>
+          </div>
+      </div>
+</body>
