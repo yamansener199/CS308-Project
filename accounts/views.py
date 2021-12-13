@@ -24,10 +24,8 @@ def registerPage(request):
 				form.save()
 				user = form.cleaned_data.get('username')
 				messages.success(request, 'Account was created for ' + user)
-
 				return redirect('login')
 			
-
 		context = {'form':form}
 		return render(request, 'accounts/register.html', context)
 
@@ -49,10 +47,11 @@ def loginPage(request):
 
 		context = {}
 		return render(request, 'accounts/login.html', context)
-
+		
+@login_required
 def logoutUser(request):
 	logout(request)
-	return redirect('login')
+	return redirect('home')
 
 def whoweare(request):
 	return render(request, 'accounts/whoweare.html')
@@ -60,10 +59,12 @@ def whoweare(request):
 def info(request):
 	return render(request, 'accounts/info.html')
 
-@login_required(login_url='login')
 def home(request):
 	return render(request, 'accounts/dashboard.html')
 
+@login_required(login_url='login')
+def change_data(request):
+	return render(request,'accounts/account.html')
 
 
 		
