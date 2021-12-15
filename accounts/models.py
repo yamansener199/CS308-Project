@@ -2,12 +2,13 @@ from django.db import models
 
 # Create your models here.
 
-class Customer(models.Model):
-	name = models.CharField(max_length=200, null=True)
-	phone = models.CharField(max_length=200, null=True)
-	email = models.CharField(max_length=200, null=True)
-	email = models.CharField(max_length=200, null=True)
-	date_created = models.DateTimeField(auto_now_add=True, null=True)
+class Patient(models.Model):
+	name = models.CharField(max_length=100,default="")
+	surname = models.CharField(max_length=100,default="")
+	bloodtype = models.CharField(max_length=3,default="")
+	doctorname = models.CharField(max_length=100,default="")
+	lat = models.CharField(max_length=100,default="")
+	len = models.CharField(max_length=100,default="")
 	def __str__(self):
 		return self.name
 

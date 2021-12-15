@@ -62,6 +62,25 @@ def info(request):
 def home(request):
 	return render(request, 'accounts/dashboard.html')
 
+def submit(request):
+	if request.method == 'POST':
+		name=request.POST.get('name')
+		surname=request.POST.get('surname')
+		bloodtype=request.POST.get('bloodtype')
+		doctorname=request.POST.get('doctor_name')
+		lat=request.POST.get('Lat')
+		len=request.POST.get('Len')
+		patient = Patient.objects.create(name=name,
+										surname=surname,
+										bloodtype=bloodtype,
+										doctorname=doctorname,
+										lat=lat,
+										len=len	
+													)
+		messages.success(request, 'Request created for : ' +str(name))
+		render(request,'accounts/main.html')
+	return render(request, 'accounts/submit.html')
+
 @login_required(login_url='login')
 def change_data(request):
 	return render(request,'accounts/account.html')
