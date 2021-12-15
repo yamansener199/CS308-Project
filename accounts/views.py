@@ -67,9 +67,10 @@ def submit(request):
 		name=request.POST.get('name')
 		surname=request.POST.get('surname')
 		bloodtype=request.POST.get('bloodtype')
-		doctorname=request.POST.get('doctor_name')
+		doctorname=request.POST.get('doctorname')
 		lat=request.POST.get('Lat')
 		len=request.POST.get('Len')
+		
 		patient = Patient.objects.create(name=name,
 										surname=surname,
 										bloodtype=bloodtype,
@@ -77,6 +78,7 @@ def submit(request):
 										lat=lat,
 										len=len	
 													)
+		print(name,surname,bloodtype,doctorname,lat,len)
 		messages.success(request, 'Request created for : ' +str(name))
 		render(request,'accounts/main.html')
 	return render(request, 'accounts/submit.html')
