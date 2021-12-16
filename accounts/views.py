@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from .models import *
-from .forms import CreateUserForm
+from .forms import CreateUserForm ,PatientForm
 
 def registerPage(request):
 	if request.user.is_authenticated:
@@ -64,23 +64,26 @@ def home(request):
 
 def submit(request):
 	if request.method == 'POST':
-		name=request.POST.get('name')
-		surname=request.POST.get('surname')
-		bloodtype=request.POST.get('bloodtype')
-		doctorname=request.POST.get('doctorname')
-		lat=request.POST.get('Lat')
-		len=request.POST.get('Len')
-		
-		patient = Patient.objects.create(name=name,
-										surname=surname,
-										bloodtype=bloodtype,
-										doctorname=doctorname,
-										lat=lat,
-										len=len	
-													)
-		print(name,surname,bloodtype,doctorname,lat,len)
-		messages.success(request, 'Request created for : ' +str(name))
-		render(request,'accounts/main.html')
+		form = PatientForm(data=request.POST)
+		if(form.is_valid()):
+			name=request.GET.get('name')
+			surname=request.GET.get('surname')
+			bloodtype=request.GET.get('bloodtype')
+			doctorname=request.GET.get('doctorname')
+			lat=request.GET.get('Lat')
+			len=request.GET.get('Len')
+			print(name,surname,bloodtype,doctorname,lat,len)
+			Patient.objects.create(name=name,
+									surname=surname,
+									bloodtype=bloodtype,
+									doctorname=doctorname,
+									lat=lat,
+									len=len	
+									)
+			print(name,surname,bloodtype,doctorname,lat,len)
+			messages.success(request, 'Request created for : ' +str(name))
+			render(request, 'accounts/main.html',)
+		print("OPPSSSS")
 	return render(request, 'accounts/submit.html')
 
 @login_required(login_url='login')
