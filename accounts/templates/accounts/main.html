@@ -82,14 +82,25 @@
       for (let i = 0; i < List_of_List.length; i++) {
         const patient = List_of_List[i];
 
-        new google.maps.Marker({
+        const marker= new google.maps.Marker({
           position: { lat: patient[3], lng: patient[4] },
           map,
           title: patient[0]+" "+patient[1],
           zIndex: 1,
         });
+        attachContentMessage(marker, patient)
       }
 		}
+    function attachContentMessage(marker, content) {
+      let content_patient="";
+      const infowindow = new google.maps.InfoWindow({
+        content: content_patient,
+      });
+
+      marker.addListener("click", () => {
+        infowindow.open(marker.get("map"), marker);
+      });
+    }
 	</script>
 	<hr>
   <a href="{% url 'submit' %}" class="">Submit request !</a>

@@ -77,7 +77,6 @@ def home(request):
 	dataJSON = dumps(lat_len)
 	print(dataJSON)
 	return render(request, 'accounts/dashboard.html',{'data': dataJSON})
-
 def submit(request):
 	if request.method == 'POST':  # data sent by user
 		form = PatientForm(request.POST)
