@@ -1,5 +1,5 @@
 {% load static %}
-
+{%  include 'accounts/navbar.html' %}
 <!--The div element for the map -->
 <div id="map"></div>
 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
@@ -14,13 +14,11 @@
             zoom: 12,
             center: myLatlng,
             });
-            // Create the initial InfoWindow.
             let infoWindow = new google.maps.InfoWindow({
                 content: "Find your hospital on the map ,Update coming Soon",
                 position: myLatlng,
                 });
                 infoWindow.open(map);
-            // Configure the click listener.
                 map.addListener("click", (mapsMouseEvent) => {
                     infoWindow.close();
                     infoWindow = new google.maps.InfoWindow({
@@ -35,7 +33,6 @@
                 var len=parse_data.slice(parse_data.indexOf(':',index+1)+1,parse_data.indexOf('}')-1);
                 document.getElementById("latt").value=lat;
                 document.getElementById("lenn").value=len;
-
                 infoWindow.open(map);
                 });
             }
@@ -58,8 +55,8 @@
       min-height: 100%;
       }
       body, div, form, input, select, textarea, label, p { 
-      padding: 0;
-      margin: 0;
+      padding: 1px;
+      margin: 1px;
       outline: none;
       font-family: Roboto, Arial, sans-serif;
       font-size: 14px;
@@ -86,7 +83,7 @@
       padding: 20px;
       }
       form {
-      width: 100%;
+      width: 50%;
       padding: 20px;
       border-radius: 6px;
       background: #fff;
@@ -245,4 +242,6 @@
     {% csrf_token %}
     {{ patient_form.as_p }}
     <input type="submit" value="Save new request">
+    <a href="{% url 'hospitalinfo' %}">Can't find the hospital ?</a>
 </form>
+{%  include 'accounts/footer.html' %}

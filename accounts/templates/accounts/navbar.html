@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>First Blood</title>
+  <title >First Blood</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -22,7 +22,7 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="{% url 'home' %}">First Blood</a>
     </div>
-    <img  width=400px height=150px src="{% static 'images/logo1.png' %}">
+    <img  width=400px height=150px src="{% static 'images/logo1.svg' %}">
     <ul class="nav navbar-nav">
       <li class="active"><a href="{% url 'home' %}">Dashboard</a></li>
       <li class="active"><a href="{% url 'whoweare' %}">WhoWeAre</a></li>
@@ -32,7 +32,7 @@
       {% if user.is_authenticated %}
           <p class="navbardoctorback" >Welcome Back Doctor {{user.username}} !</p>
           <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
-          <li><a href="{% url 'change_data' %}"><span class="glyphicon glyphicon-user"></span>Doctor Profile</a></span></li>
+          <li><a href="{% url 'change_data' %}">Doctor Profile</a></span></li>
       {% else %}
       <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> Doctor Register</a></li>
       <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>Doctor Login</a></li>

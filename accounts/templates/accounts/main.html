@@ -1,51 +1,64 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 <head>
 	<title>HomePage</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
 	<link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
-
 </head>
 <body>
 	{%  include 'accounts/navbar.html' %}
 	<div class="container-fluid">
-	{% block content %}
-
-	{% endblock %}
     </div>
     <style>
         #map {
             height: 600px;
-            /* The height is 400 pixels */
             width: 100%;
-            /* The width is the width of the web page */
+            background-color: black;
             }
+        button {
+          display: block;
+          margin: 30px auto;
+          width: 200px;
+          height: 50px;
+          background-color: #c0392b;
+          border: none;
+          color: white;
+          font: 20px cairo;
+          cursor: pointer;
+          transition: all .3s linear
+            }
+
+        button:hover{
+          background-color: red;
+          transform: scale(1.1)
+            }
+        body{
+          background-color: #C0C0C0;
+        }
     </style>
-    <!--The div element for the map -->
     <div id="map"></div>
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmCpnbtnFsBdVam7t0QRAv78JUtvIoZj8&callback=initMap&libraries=&v=weekly"
       async
     ></script>
 	<script>
-			// Initialize and add the map
+    function redirect(url) {
+      if (url !== "") {
+        if (url.slice(0, 4) === "http") {
+          window.location.href = url;
+        }
+      }
+    }
 		function initMap() {
-      //data coming from db parsed 
-			// The location of Istanbul
 			const myLatlng = { lat: 41.015137, lng: 28.979530 };
 			const map = new google.maps.Map(document.getElementById("map"), {
 				zoom: 12,
 				center: myLatlng,
 			});
-			// The marker, positioned at Istanbul
       var List_of_List =[];
 			var data = JSON.parse("{{data|escapejs}}");
       for (var key in data) {
-        // check if the property/key is defined in the object itself, not in parent
         if (data.hasOwnProperty(key)) {    
           var elem=data[key];
           var patient_name="";
@@ -53,6 +66,8 @@
           var hospital_name="";  
           var len="";
           var lat="";
+          var Doctorname="";
+          var bloodtype="";
           var tst_list=[];
           for(var key in elem){
             if(key =="patient_name"){
@@ -75,85 +90,64 @@
               len=elem[key]
               tst_list.push(len)
             }
+            else if(key =="Doctorname"){
+              Doctorname=elem[key]
+              tst_list.push(Doctorname)
+            }
+            else if(key =="bloodtype"){
+              bloodtype=elem[key]
+              tst_list.push(bloodtype)
+            }
           }
         }
         List_of_List.push(tst_list)
       }
       for (let i = 0; i < List_of_List.length; i++) {
         const patient = List_of_List[i];
-
         const marker= new google.maps.Marker({
           position: { lat: patient[3], lng: patient[4] },
           map,
-          title: patient[0]+" "+patient[1],
           zIndex: 1,
         });
         attachContentMessage(marker, patient)
       }
 		}
     function attachContentMessage(marker, content) {
-      let content_patient="";
+      let content_patient_name=content[0];
+      let content_patient_surname=content[1];
+      let content_patient_hospitalname=content[2];
+      let content_patient_Doctorname=content[5];
+      let content_patient_bloodtype=content[6];
+      let content_message=content_patient_name+" \ "+
+                          content_patient_surname+" \ "+
+                          content_patient_hospitalname+" \ "+
+                          content_patient_Doctorname;
+    const contentString =
+    '<div id="content">' +
+    '<div id="siteNotice">' +
+    "</div>" +
+      '<h3 id="firstHeading" class="thirdHeading">Patient Info</h1>' +
+      '<div id="bodyContent">' +
+      "<p>"+"Patient's Name : "+content_patient_name+"</p>" +
+      "<p>"+"Patient's Surname : "+content_patient_surname+"</p>" +
+      "<p>"+"Patient's Hospital Name : "+content_patient_hospitalname+"</p>" +
+      "<p>"+"Patient's Doctor Name : "+content_patient_Doctorname+"</p>" +
+      "<p>"+"Patient's Blood Type : "+content_patient_bloodtype+"</p>" +
+      '<a href="{% url "help" %}">How to Help</a>'
+    "</div>" +
+    "</div>";
       const infowindow = new google.maps.InfoWindow({
-        content: content_patient,
+        content: contentString,
       });
-
       marker.addListener("click", () => {
         infowindow.open(marker.get("map"), marker);
       });
     }
 	</script>
 	<hr>
-  <a href="{% url 'submit' %}" class="">Submit request !</a>
+  <button onclick ="redirect('http://localhost:8000/submit/')">Submit Blood Request Form !</button>  
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<footer class="bg-white">
-    <div class="container py-5">
-      <div class="row py-4">
-        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0"><img src="img/logo.png" alt="" width="180" class="mb-3">
-          <p class="font-italic text-muted">All rights Reserved.First Blood mainly aims on publishing the blood need of anyone around the world !If you see a mark around you please contact them !</p>
-          <ul class="list-inline mt-4">
-            <li class="list-inline-item"><a href="#" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></li>
-            <li class="list-inline-item"><a href="#" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></li>
-            <li class="list-inline-item"><a href="#" target="_blank" title="instagram"><i class="fa fa-instagram"></i></a></li>
-            <li class="list-inline-item"><a href="#" target="_blank" title="pinterest"><i class="fa fa-pinterest"></i></a></li>
-            <li class="list-inline-item"><a href="#" target="_blank" title="vimeo"><i class="fa fa-vimeo"></i></a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-          <h6 class="text-uppercase font-weight-bold mb-4">About Us</h6>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2"><a href="{% url 'info' %}" class="text-muted">Information</a></li>
-            <li class="mb-2"><a href="{% url 'whoweare' %}" class="text-muted">Who we are </a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-          <h6 class="text-uppercase font-weight-bold mb-4">Company</h6>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2"><a href="{% url 'login' %}" class="text-muted">Login</a></li>
-            <li class="mb-2"><a href="{% url 'register' %}" class="text-muted">Register</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-4 col-md-6 mb-lg-0">
-          <h6 class="text-uppercase font-weight-bold mb-4">Newsletter</h6>
-          <p class="text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At itaque temporibus.</p>
-          <div class="p-1 rounded border">
-            <div class="input-group">
-              <input type="email" placeholder="Enter your email address" aria-describedby="button-addon1" class="form-control border-0 shadow-0">
-              <div class="input-group-append">
-                <button id="button-addon1" type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Copyrights -->
-    <div class="bg-light py-4">
-      <div class="container text-center">
-        <p class="text-muted mb-0 py-2">© 2019 FirstBlood All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-</html>
+{%  include 'accounts/footer.html' %}
