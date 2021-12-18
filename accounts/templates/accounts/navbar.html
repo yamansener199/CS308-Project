@@ -32,6 +32,7 @@
       {% if user.is_authenticated %}
           <p class="navbardoctorback" >Welcome Back Doctor {{user.username}} !</p>
           <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
+          <li><a href="{% url 'change_data' %}"><span class="glyphicon glyphicon-user"></span>Doctor Profile</a></span></li>
       {% else %}
       <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> Doctor Register</a></li>
       <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>Doctor Login</a></li>

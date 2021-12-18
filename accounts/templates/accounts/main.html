@@ -18,7 +18,7 @@
     </div>
     <style>
         #map {
-            height: 400px;
+            height: 600px;
             /* The height is 400 pixels */
             width: 100%;
             /* The width is the width of the web page */
@@ -33,20 +33,63 @@
     ></script>
 	<script>
 			// Initialize and add the map
-			function initMap() {
-			// The location of Uluru
-			const uluru = { lat: -25.344, lng: 131.036 };
-			// The map, centered at Uluru
+		function initMap() {
+      //data coming from db parsed 
+			// The location of Istanbul
+			const myLatlng = { lat: 41.015137, lng: 28.979530 };
 			const map = new google.maps.Map(document.getElementById("map"), {
-				zoom: 4,
-				center: uluru,
+				zoom: 12,
+				center: myLatlng,
 			});
-			// The marker, positioned at Uluru
-			const marker = new google.maps.Marker({
-				position: uluru,
-				map: map,
-			});
-			}
+			// The marker, positioned at Istanbul
+      var List_of_List =[];
+			var data = JSON.parse("{{data|escapejs}}");
+      for (var key in data) {
+        // check if the property/key is defined in the object itself, not in parent
+        if (data.hasOwnProperty(key)) {    
+          var elem=data[key];
+          var patient_name="";
+          var patient_surname="";  
+          var hospital_name="";  
+          var len="";
+          var lat="";
+          var tst_list=[];
+          for(var key in elem){
+            if(key =="patient_name"){
+              patient_name=elem[key]
+              tst_list.push(patient_name)
+            }
+            else if(key =="patient_surname"){
+              patient_surname=elem[key]
+              tst_list.push(patient_surname)
+            }
+            else if(key =="hospital_name"){
+              hospital_name=elem[key]
+              tst_list.push(hospital_name)
+            }
+            else if(key =="lat"){
+              lat=elem[key]
+              tst_list.push(lat)
+            }
+            else if(key =="len"){
+              len=elem[key]
+              tst_list.push(len)
+            }
+          }
+        }
+        List_of_List.push(tst_list)
+      }
+      for (let i = 0; i < List_of_List.length; i++) {
+        const patient = List_of_List[i];
+
+        new google.maps.Marker({
+          position: { lat: patient[3], lng: patient[4] },
+          map,
+          title: patient[0]+" "+patient[1],
+          zIndex: 1,
+        });
+      }
+		}
 	</script>
 	<hr>
   <a href="{% url 'submit' %}" class="">Submit request !</a>

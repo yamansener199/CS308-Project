@@ -2,14 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-
 from django.contrib import messages
-
 from django.contrib.auth.decorators import login_required
-
-# Create your views here.
+from json import dumps
 from .models import *
 from .forms import CreateUserForm ,PatientForm
 
@@ -36,9 +33,7 @@ def loginPage(request):
 		if request.method == 'POST':
 			username = request.POST.get('username')
 			password =request.POST.get('password')
-
 			user = authenticate(request, username=username, password=password)
-
 			if user is not None:
 				login(request, user)
 				return redirect('home')
@@ -60,31 +55,43 @@ def info(request):
 	return render(request, 'accounts/info.html')
 
 def home(request):
-	return render(request, 'accounts/dashboard.html')
+	coordinates=[]
+	lat_len={}
+	u = Patient.objects.values()
+	fields = ['name', 'surname', 'hospital_name', 'Doctorname','bloodtype','lat','len']  # this says to include all fields from model to the form
+
+	for object in u:
+		coordinates.append([
+			object['name'],
+			object['surname'],
+			object['hospital_name'],
+			object['lat'],
+			object['len']])
+	for i in range(len(coordinates)):
+		lat_len[i]={'patient_name':str(coordinates[i][0]),
+					'patient_surname':str(coordinates[i][0]),
+					'hospital_name':str(coordinates[i][2]),
+					'lat':float(coordinates[i][3]),
+					'len':float(coordinates[i][4])}
+
+	dataJSON = dumps(lat_len)
+	print(dataJSON)
+	return render(request, 'accounts/dashboard.html',{'data': dataJSON})
 
 def submit(request):
-	if request.method == 'POST':
-		form = PatientForm(data=request.POST)
-		if(form.is_valid()):
-			name=request.GET.get('name')
-			surname=request.GET.get('surname')
-			bloodtype=request.GET.get('bloodtype')
-			doctorname=request.GET.get('doctorname')
-			lat=request.GET.get('Lat')
-			len=request.GET.get('Len')
-			print(name,surname,bloodtype,doctorname,lat,len)
-			Patient.objects.create(name=name,
-									surname=surname,
-									bloodtype=bloodtype,
-									doctorname=doctorname,
-									lat=lat,
-									len=len	
-									)
-			print(name,surname,bloodtype,doctorname,lat,len)
-			messages.success(request, 'Request created for : ' +str(name))
-			render(request, 'accounts/main.html',)
-		print("OPPSSSS")
-	return render(request, 'accounts/submit.html')
+	if request.method == 'POST':  # data sent by user
+		form = PatientForm(request.POST)
+		if form.is_valid():
+			form.save()  # this will save Car info to database
+			user = form.cleaned_data.get('name')
+			messages.info(request, "Your Request Created"+str(user))
+			return render(request,'accounts/main.html')
+		else:
+			print("OPPSSS")
+	else:  # display empty form
+		form = PatientForm()
+	return render(request, 'accounts/submit.html', {'patient_form': form})
+
 
 @login_required(login_url='login')
 def change_data(request):

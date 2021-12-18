@@ -241,77 +241,8 @@
       }
     </style>
   </head>
-  <body>
-    <div class="testbox">
-      <form method="POST" action="">
-        {% csrf_token %}
-          <div class="item">
-            <label for="fname"> First Name<span>*</span></label>
-            <input id="fname" type="text" name="name" required/>
-          </div>
-          <div class="item">
-            <label for="lname"> Last Name<span>*</span></label>
-            <input id="lname" type="text" name="surname" required/>
-          </div>
-          <div class="item">
-            <label for="lname"> Doctor Name<span>*</span></label>
-            <input id="lname" type="text" name="surname" required/>
-          </div>
-          <div class="item">
-            <label for="lname">Email</label>
-            <input name="email" type="email" id="lname" required>
-          </div>
-          <div class="item">
-            <label for="lname"> Longitude<span>*</span></label>
-            <input id="lenn" type="text" name="lenn" required/>
-          </div>
-          <div class="item">
-            <label for="lname"> Latitude<span>*</span></label>
-            <input id="latt" type="text" name="latt" required/>
-          </div>
-        </div>
-        <div class="question">
-          <label>Blood Type</label>
-          <div class="question-answer">
-            <div>
-              <input type="radio" value="A Positive" id="radio_1" name="bloodtype"/>
-              <label for="radio_1" class="radio"><span>A Positive</span></label>
-            </div>
-            <div>
-              <input  type="radio" value="A Negative" id="radio_2" name="bloodtype"/>
-              <label for="radio_2" class="radio"><span>A Negative</span></label>
-            </div>
-            <div>
-              <input  type="radio" value="0 Positive" id="radio_3" name="bloodtype"/>
-              <label for="radio_3" class="radio"><span>0 Positive</span></label>
-            </div>
-            <div>
-              <input  type="radio" value="0 Negative" id="radio_4" name="bloodtype"/>
-              <label for="radio_4" class="radio"><span>0 Negative</span></label>
-            </div>
-            <div>
-              <input  type="radio" value="B Positive" id="radio_5" name="bloodtype"/>
-              <label for="radio_5" class="radio"><span>B Positive</span></label>
-            </div>
-            <div>
-              <input  type="radio" value="B Negative" id="radio_6" name="bloodtype"/>
-              <label for="radio_6" class="radio"><span>B Negative</span></label>
-            </div>
-            <div>
-              <input type="radio" value="AB Positive" id="radio_7" name="bloodtype"/>
-              <label for="radio_7" class="radio"><span>AB Positive</span></label>
-            </div>
-            <div>
-              <input type="radio" value="AB Negative" id="radio_8" name="bloodtype"/>
-              <label for="radio_8" class="radio"><span>AB Negative</span></label>
-            </div>
-          </div>
-        </div>
-      </fieldset>
-      <div class="btn-block">
-        <button type="submit" href="/">Submit</button>
-      </div>
-      </form>
-    </div>
-  </body>
-</html>
+  <form action="{% url 'submit' %}" method="post">
+    {% csrf_token %}
+    {{ patient_form.as_p }}
+    <input type="submit" value="Save new request">
+</form>

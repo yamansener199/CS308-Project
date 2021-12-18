@@ -4,30 +4,28 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import Patient
 
-CHOICES =(
-    ("1", "A positive"),
-    ("2", "B positive"),
-    ("3", "A negative"),
-    ("4", "B negative"),
-    ("5", "AB negative"),
-	("6", "AB positive")
-)
-#Can create choices in build here about the doctors for choosing the doctor
-
-
 class CreateUserForm(UserCreationForm):
 	class Meta:
 		model = User
 		fields = ['username', 'email', 'password1', 'password2']
 
-class PatientForm(forms.Form):
-	name = forms.CharField(label='Your name' ,max_length=100)
-	surname = forms.CharField(label='Your name' ,max_length=100)
-	bloodtype = forms.ChoiceField(choices = CHOICES)
-	email=forms.EmailField(label='Email',max_length=100)
-	doctorname = forms.CharField(label='Your name' ,max_length=100)
-	lat = forms.CharField(label='Your name' ,max_length=100)
-	len = forms.CharField(label='Your name' ,max_length=100)
+class PatientForm(ModelForm):
+	lat = forms.CharField(
+    label = 'latitude',
+    max_length = 2000,
+    required = True,
+    widget = forms.TextInput(
+        attrs = {'id': 'latt', 'name': 'lat',}
+        )
+    )
+	len = forms.CharField(
+    label = 'len',
+    max_length = 2000,
+    required = True,
+    widget = forms.TextInput(
+        attrs = {'id': 'lenn', 'name': 'len'}
+        )
+    )
 	class Meta:
 		model = Patient
-		fields = ('name', 'surname', 'bloodtype','doctorname','lat','len')
+		fields = ['name', 'surname', 'hospital_name', 'Doctorname','bloodtype','lat','len']  # this says to include all fields from model to the form
