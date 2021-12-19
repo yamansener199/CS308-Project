@@ -1,0 +1,27 @@
+{%  include 'accounts/navbar.html' %}
+{% for profile in user_profile %}
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+          <tr>
+            <th>>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Hospital Name</th>
+            <th>Doctor ID</th>
+            <th>Blood Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>{{profile.name}}</th>
+            <td>{{profile.surname}}</td>
+            <td>{{profile.hospital_name}}</td>
+            <td>{{profile.Doctorname}}</td>
+            <td>{{profile.bloodtype}}</td>
+            <td>{{profile.bloodtype}}</td>
+          </tr>
+        </tbody>
+      </table>
+{% endfor %}       
+
+{%  include 'accounts/footer.html' %}

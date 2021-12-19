@@ -9,6 +9,7 @@ class CreateUserForm(UserCreationForm):
 		model = User
 		fields = ['username', 'email', 'password1', 'password2']
 
+
 class PatientForm(ModelForm):
 	lat = forms.CharField(
     label = 'latitude',
@@ -28,4 +29,4 @@ class PatientForm(ModelForm):
     )
 	class Meta:
 		model = Patient
-		fields = ['name', 'surname', 'hospital_name', 'Doctorname','bloodtype','lat','len']  # this says to include all fields from model to the form
+		fields = ['name', 'surname', 'hospital_name', 'Doctorname','bloodtype','email','lat','len']  # this says to include all fields from model to the form

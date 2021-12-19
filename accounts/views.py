@@ -78,20 +78,20 @@ def home(request):
 					'Doctorname':str(coordinates[i][5]),
 					'bloodtype':str(coordinates[i][6])}
 	dataJSON = dumps(lat_len)
-	print(dataJSON)
 	return render(request, 'accounts/dashboard.html',{'data': dataJSON})
 
 def submit(request):
-	if request.method == 'POST':  # data sent by user
+	if request.method == 'POST': 
 		form = PatientForm(request.POST)
 		if form.is_valid():
-			form.save()  # this will save Car info to database
-			user = form.cleaned_data.get('name')
-			messages.info(request, "Your Request Created"+str(user))
+			form.save()  
+			username = form.cleaned_data.get('name')
+			usersurname = form.cleaned_data.get('name')
+			messages.info(request, "Your Request Created"+str(username)+" "+str(usersurname))
 			return render(request,'accounts/main.html',)
 		else:
-			print("OPPSSS")
-	else:  # display empty form
+			print("GO BACK HACI !")
+	else: 
 		form = PatientForm()
 	return render(request, 'accounts/submit.html', {'patient_form': form,'objectlist': User.objects.only('username')})
 
@@ -104,8 +104,10 @@ def help(request):
 	return render(request, 'accounts/help.html')
 
 @login_required(login_url='login')
-def change_data(request):
-	return render(request,'accounts/account.html')
+def doctor_profile(request):
+	user_profile=Patient.objects.filter(Doctorname=request.user.username)
+	print(user_profile)
+	return render(request,'accounts/doctor_profile.html',{'user_profile': user_profile})
 
 
 		
