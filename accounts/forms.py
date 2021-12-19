@@ -29,4 +29,4 @@ class PatientForm(ModelForm):
     )
 	class Meta:
 		model = Patient
-		fields = ['name', 'surname', 'hospital_name', 'Doctorname','bloodtype','email','lat','len']  # this says to include all fields from model to the form
+		fields = ['name', 'surname', 'hospital_name', 'Doctorname','bloodtype','lat','len']  # this says to include all fields from model to the form

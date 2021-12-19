@@ -1,9 +1,8 @@
-{%  include 'accounts/navbar.html' %}
+{% load static %}
 {% for profile in user_profile %}
     <table class="table is-fullwidth is-hoverable">
         <thead>
           <tr>
-            <th>>ID</th>
             <th>Name</th>
             <th>Surname</th>
             <th>Hospital Name</th>
@@ -18,10 +17,27 @@
             <td>{{profile.hospital_name}}</td>
             <td>{{profile.Doctorname}}</td>
             <td>{{profile.bloodtype}}</td>
-            <td>{{profile.bloodtype}}</td>
+            <td><input type="button" value="Delete Row" onclick="SomeDeleteRowFunction(this)"></td>
           </tr>
         </tbody>
       </table>
-{% endfor %}       
-
-{%  include 'accounts/footer.html' %}
+<script>
+    function SomeDeleteRowFunction(btndel) {
+    if (typeof(btndel) == "object") {
+        $(btndel).closest("tr").remove();
+        $.ajax({
+        url:"/do_something/",
+        type: "POST",
+        data: {name: name, age: age},
+        success:function(response){},
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){
+            alert("error doing something");
+        }
+});
+    } else {
+        return false;
+    }
+}
+</script>
+{% endfor %}

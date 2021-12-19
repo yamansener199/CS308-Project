@@ -50,14 +50,8 @@
         }
       }
     }
-		function initMap() {
-			const myLatlng = { lat: 41.015137, lng: 28.979530 };
-			const map = new google.maps.Map(document.getElementById("map"), {
-				zoom: 12,
-				center: myLatlng,
-			});
+    function AddMarkers(map,data){
       var List_of_List =[];
-			var data = JSON.parse("{{data|escapejs}}");
       for (var key in data) {
         if (data.hasOwnProperty(key)) {    
           var elem=data[key];
@@ -111,6 +105,15 @@
         });
         attachContentMessage(marker, patient)
       }
+    }
+		function initMap() {
+			const myLatlng = { lat: 41.015137, lng: 28.979530 };
+			const map = new google.maps.Map(document.getElementById("map"), {
+				zoom: 12,
+				center: myLatlng,
+			});
+			var data = JSON.parse("{{data|escapejs}}");
+      AddMarkers(map,data);
 		}
     function attachContentMessage(marker, content) {
       let content_patient_name=content[0];

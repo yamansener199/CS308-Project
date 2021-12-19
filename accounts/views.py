@@ -10,7 +10,8 @@ from json import dumps
 from .models import *
 import json
 from .forms import CreateUserForm ,PatientForm
-from .useful import ReadData
+from .useful import ReadData,Patient_Markers,Hospital_Markers_Turkey
+
 def registerPage(request):
 	if request.user.is_authenticated:
 		return redirect('home')
@@ -54,30 +55,13 @@ def whoweare(request):
 
 def info(request):
 	return render(request, 'accounts/info.html')
+def hospital_displays(request):
+	data=Hospital_Markers_Turkey()
+	return render(request, 'accounts/hospitals.html',{'data':data})
 
 def home(request):
-	coordinates=[]
-	lat_len={}
-	u = Patient.objects.values()
-	#fields = ['name', 'surname', 'hospital_name', 'Doctorname','bloodtype','lat','len']  # this says to include all fields from model to the form
-	for object in u:
-		coordinates.append([
-			object['name'],
-			object['surname'],
-			object['hospital_name'],
-			object['lat'],
-			object['len'],
-			object['Doctorname'],
-			object['bloodtype']])
-	for i in range(len(coordinates)):
-		lat_len[i]={'patient_name':str(coordinates[i][0]),
-					'patient_surname':str(coordinates[i][1]),
-					'hospital_name':str(coordinates[i][2]),
-					'lat':float(coordinates[i][3]),
-					'len':float(coordinates[i][4]),
-					'Doctorname':str(coordinates[i][5]),
-					'bloodtype':str(coordinates[i][6])}
-	dataJSON = dumps(lat_len)
+	Patient_samples = Patient.objects.values()
+	dataJSON = Patient_Markers(Patient_samples)
 	return render(request, 'accounts/dashboard.html',{'data': dataJSON})
 
 def submit(request):
@@ -102,6 +86,13 @@ def CantfindHospital(request):
 
 def help(request):
 	return render(request, 'accounts/help.html')
+
+"""
+@login_required(login='login')
+def UpdateData(request):
+"""
+
+
 
 @login_required(login_url='login')
 def doctor_profile(request):

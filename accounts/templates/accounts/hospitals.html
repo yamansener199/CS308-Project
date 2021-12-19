@@ -1,0 +1,112 @@
+<html>
+<head>
+	<title>HomePage</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+{%  include 'accounts/navbar.html' %}
+<style>
+    #map {
+        height: 600px;
+        width: 100%;
+        background-color: black;
+        }
+</style>
+<div id="map"></div>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmCpnbtnFsBdVam7t0QRAv78JUtvIoZj8&callback=initMap&libraries=&v=weekly"
+  async
+></script>
+<script>
+function initMap() {
+			const myLatlng = { lat: 41.015137, lng: 28.979530 };
+			const map = new google.maps.Map(document.getElementById("map"), {
+				zoom: 12,
+				center: myLatlng,
+			});
+			var data = JSON.parse("{{data|escapejs}}");
+      AddHospitalMarkers(map,data)
+}
+function AddHospitalMarkers(map,data){
+      var List_of_List =[];
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {    
+          var elem=data[key];
+          var province="";
+          var district="";  
+          var hospital_name="";
+          var hospital_type=""; 
+          var lat="";
+          var len="";
+          var telephone="";
+          var tst_list=[];
+          for(var key in elem){
+            if(key =="province"){
+              province=elem[key]
+              tst_list.push(province)
+            }
+            else if(key =="district"){
+              district=elem[key]
+              tst_list.push(district)
+            }
+            else if(key =="hospital_name"){
+              hospitale_name=elem[key]
+              tst_list.push(hospitale_name)
+            }
+            else if(key =="hospital_type"){
+              hospitale_name=elem[key]
+              tst_list.push(hospitale_name)
+            }
+            else if(key =="lat"){
+              lat=elem[key]
+              tst_list.push(lat)
+            }
+            else if(key =="len"){
+              len=elem[key]
+              tst_list.push(len)
+            }
+          }
+        }
+        List_of_List.push(tst_list)
+      }
+      for (let i = 0; i < List_of_List.length; i++) {
+        const hospital = List_of_List[i];
+        const marker= new google.maps.Marker({
+          position: { lat: parseFloat(hospital[4]), lng: parseFloat(hospital[5]) },
+          map,
+          zIndex: 1,
+        });
+        console.log(hospital)
+        attachContentMessage(marker, hospital)
+      }
+}
+function attachContentMessage(marker, content) {
+      let content_province=content[0];
+      let content_district=content[1];
+      let content_hospitalname=content[2];
+      let content_hospital_type=content[3];
+      let content_message=content_province+" \ "+
+      content_district+" \ "+
+      content_hospitalname+" \ "+
+      content_hospital_type;
+      const contentString =
+      '<div id="content">' +
+      '<div id="siteNotice">' +
+      "</div>" +
+        '<h3 id="firstHeading" class="thirdHeading">Hospital Info</h1>' +
+        '<div id="bodyContent">' +
+        "<p>"+"Province : "+content_province+"</p>" +
+        "<p>"+"District : "+content_district+"</p>" +
+        "<p>"+"Hospital Name : "+content_hospitalname+"</p>" +
+        "<p>"+"Hospital Type : "+content_hospital_type+"</p>" +
+        '<a href="{% url "help" %}">How to Help</a>'
+      "</div>" +
+      "</div>";
+        const infowindow = new google.maps.InfoWindow({
+          content: contentString,
+        });
+      marker.addListener("click", () => {
+        infowindow.open(marker.get("map"), marker);
+      });
+    }
+</script>
