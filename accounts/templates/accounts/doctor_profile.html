@@ -21,23 +21,23 @@
           </tr>
         </tbody>
       </table>
+{% endfor %}
 <script>
-    function SomeDeleteRowFunction(btndel) {
-    if (typeof(btndel) == "object") {
-        $(btndel).closest("tr").remove();
-        $.ajax({
-        url:"/do_something/",
-        type: "POST",
-        data: {name: name, age: age},
-        success:function(response){},
-        complete:function(){},
-        error:function (xhr, textStatus, thrownError){
-            alert("error doing something");
-        }
+  function SomeDeleteRowFunction(btndel) {
+  if (typeof(btndel) == "object") {
+      $(btndel).closest("tr").remove();
+      $.ajax({
+      url:"/do_something/",
+      type: "POST",
+      data: {name: name, age: age},
+      success:function(response){},
+      complete:function(){},
+      error:function (xhr, textStatus, thrownError){
+          alert("error doing something");
+      }
 });
-    } else {
-        return false;
-    }
+  } else {
+      return false;
+  }
 }
 </script>
-{% endfor %}

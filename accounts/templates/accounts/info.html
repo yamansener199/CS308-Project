@@ -1,1 +1,21 @@
-BURAYA YAZACAN ULUC
+{% load static %}
+{%  include 'accounts/navbar.html' %}
+<!DOCTYPE html>
+<center>  
+    <main>
+    <h3>We announce the demand for blood to millions of people in seconds! </h3>
+
+    <p>We know that even seconds are important in cases that require blood supply. For this reason, we invite you to use First Blood. </p>
+    <img src="{% static 'images/info.png' %}"
+        width ="500"
+        height ="400">
+
+    <p>First blood allows users to post notifications at the time of an accident and other users to contact volunteers via easy-to-use interface.</p>
+
+    <h3>Step1 </h3>
+    <p>When a patient wants to submit a request, patient must get ID from the corresponding doctor. After getting the ID, the patient is enabled to submit the request by filling other related informations. </p>
+    <h3>Step2 </h3>
+    <p> The generated form becomes visible to everyone on the First blood dashboard. After the request is delivered by donater, the request will be closed and deleted by the corresponding doctor.</p>
+    </main>
+</center>
+{%  include 'accounts/footer.html' %}

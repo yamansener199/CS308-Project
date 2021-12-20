@@ -3,7 +3,6 @@ import openpyxl
 from pathlib import Path
 import pandas as pd
 import sqlite3
-import pandas as pd
 from json import dumps
 FILENAME="hospital_info.xlsx"
 

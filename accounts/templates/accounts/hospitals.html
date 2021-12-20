@@ -36,8 +36,8 @@ function AddHospitalMarkers(map,data){
           var district="";  
           var hospital_name="";
           var hospital_type=""; 
-          var lat="";
-          var len="";
+          var lat=0;
+          var len=0;
           var telephone="";
           var tst_list=[];
           for(var key in elem){
@@ -72,7 +72,7 @@ function AddHospitalMarkers(map,data){
       for (let i = 0; i < List_of_List.length; i++) {
         const hospital = List_of_List[i];
         const marker= new google.maps.Marker({
-          position: { lat: parseFloat(hospital[4]), lng: parseFloat(hospital[5]) },
+          position: { lat: hospital[4], lng:hospital[5] },
           map,
           zIndex: 1,
         });
@@ -102,7 +102,7 @@ function attachContentMessage(marker, content) {
         '<a href="{% url "help" %}">How to Help</a>'
       "</div>" +
       "</div>";
-        const infowindow = new google.maps.InfoWindow({
+      const infowindow = new google.maps.InfoWindow({
           content: contentString,
         });
       marker.addListener("click", () => {
